@@ -1,0 +1,228 @@
+{
+  "clusterConfigs": [
+    {
+      "zone": "gz",
+      "type": "kafka",
+      "bootstrapConfig": {
+        "bootstrap.servers": "172.16.38.192:9090",
+        "retries": "10",
+        "batch.size": "16384",
+        "linger.ms": "1",
+        "buffer.memory": "33554432",
+        "key.serializer": "org.apache.kafka.common.serialization.StringSerializer",
+        "value.serializer": "org.apache.kafka.common.serialization.StringSerializer",
+        "group.id": "sample-api",
+        "enable.auto.commit": "true",
+        "session.timeout.ms": "300000",
+        "max.poll.records": "100"
+      },
+      "publishProperties": [
+        {
+          "kafkaTopic": "sample-comment-uat"
+        },
+        {
+          "kafkaTopic": "sample-reply-uat"
+        },
+        {
+          "kafkaTopic": "sample-grade-calculation-uat"
+        },
+        {
+          "kafkaTopic": "sample-play-time-uat"
+        },
+        {
+          "kafkaTopic": "sample-comment-change"
+        }
+      ],
+      "messageListenerConsumeProperties": {
+        "gradeSummaryMsgHandler": [
+          {
+            "kafkaTopic": "sample-grade-calculation-uat"
+          }
+        ],
+        "commentMsgHandler#onMessageHandler": [
+          {
+            "kafkaTopic": "sample-comment-uat"
+          },
+          {
+            "kafkaTopic": "sample-play-time-uat"
+          }
+        ],
+        "replyMsgHandler": [
+          {
+            "kafkaTopic": "sample-reply-uat"
+          }
+        ]
+      }
+    },
+    {
+      "zone": "gz-2",
+      "type": "kafka",
+      "producerFactoryBean": "existedProducerFactoryBean1",
+      "consumerFactoryBean": "existedConsumerFactoryBean1",
+      "publishProperties": [
+        {
+          "kafkaTopic": "sample-comment-uat"
+        },
+        {
+          "kafkaTopic": "sample-reply-uat"
+        },
+        {
+          "kafkaTopic": "sample-grade-calculation-uat"
+        },
+        {
+          "kafkaTopic": "sample-play-time-uat"
+        },
+        {
+          "kafkaTopic": "sample-comment-change"
+        }
+      ],
+      "messageListenerConsumeProperties": {
+        "gradeSummaryMsgHandler": [
+          {
+            "kafkaTopic": "sample-grade-calculation-uat"
+          }
+        ],
+        "commentMsgHandler#onMesage": [
+          {
+            "kafkaTopic": "sample-comment-uat"
+          },
+          {
+            "kafkaTopic": "sample-play-time-uat"
+          }
+        ],
+        "replyMsgHandler": [
+          {
+            "kafkaTopic": "sample-reply-uat"
+          }
+        ]
+      }
+    },
+    {
+      "zone": "gz-2",
+      "type": "kafka",
+      "producerFactoryBean": "existedProducerFactoryBean1",
+      "consumerFactoryBean": "existedConsumerFactoryBean1",
+      "publishProperties": [
+        {
+          "kafkaTopic": "sample-comment-uat"
+        },
+        {
+          "kafkaTopic": "sample-reply-uat"
+        },
+        {
+          "kafkaTopic": "sample-grade-calculation-uat"
+        },
+        {
+          "kafkaTopic": "sample-play-time-uat"
+        },
+        {
+          "kafkaTopic": "sample-comment-change"
+        }
+      ],
+      "messageListenerConsumeProperties": {
+        "gradeSummaryMsgHandler": [
+          {
+            "kafkaTopic": "sample-grade-calculation-uat"
+          }
+        ],
+        "commentMsgHandler": [
+          {
+            "kafkaTopic": "sample-comment-uat"
+          },
+          {
+            "kafkaTopic": "sample-play-time-uat"
+          }
+        ],
+        "replyMsgHandler": [
+          {
+            "kafkaTopic": "sample-reply-uat"
+          }
+        ]
+      }
+    },
+    {
+      "zone": "sh",
+      "type": "databus",
+      "databusProperties": {
+        "appkey": "xxxx",
+        "secret": "xxxx",
+        "zone": "sh001"
+      },
+      "publishProperties": [
+        {
+          "kafkaTopic": "sample-comment-uat",
+          "databusTopic": "xxxxx-T",
+          "group": "xxxxx"
+        },
+        {
+          "kafkaTopic": "sample-reply-uat",
+          "databusTopic": "xxxxx-T",
+          "group": "xxxxx"
+        },
+        {
+          "kafkaTopic": "sample-grade-calculation-uat",
+          "databusTopic": "xxxxx-T",
+          "group": "xxxxx"
+        },
+        {
+          "kafkaTopic": "sample-play-time-uat",
+          "databusTopic": "xxxxx-T",
+          "group": "xxxxx"
+        },
+        {
+          "kafkaTopic": "sample-comment-change",
+          "databusTopic": "xxxxx-T",
+          "group": "xxxxx"
+        }
+      ],
+      "messageListenerConsumeProperties": {
+        "gradeSummaryMsgHandler": [
+          {
+            "kafkaTopic": "sample-grade-calculation-uat",
+            "databusTopic": "xxxx-T",
+            "group": "xxxxx"
+          }
+        ],
+        "commentMsgHandler": [
+          {
+            "kafkaTopic": "sample-comment-uat",
+            "databusTopic": "xxxx-T",
+            "group": "xxxxx"
+          },
+          {
+            "kafkaTopic": "sample-play-time-uat",
+            "databusTopic": "xxxx-T",
+            "group": "xxxxx"
+          }
+        ],
+        "replyMsgHandler": [
+          {
+            "kafkaTopic": "sample-reply-uat",
+            "databusTopic": "xxxx-T",
+            "group": "xxxxx"
+          }
+        ]
+      }
+    }
+  ],
+  "producerStrategy": {
+    "topicGreyConfig": {
+      "sample-comment-uat": [
+        {
+          "zone": "gz",
+          "grey": "100"
+        },
+        {
+          "zone": "sh",
+          "grey": "0"
+        }
+      ]
+    },
+    "topicProduceZoneDefault": {
+      "sample-reply-uat": "gz",
+      "sample-grade-calculation-uat": "gz",
+      "sample-play-time-uat": "gz",
+      "sample-comment-change": "gz"
+    }
+  }
+}

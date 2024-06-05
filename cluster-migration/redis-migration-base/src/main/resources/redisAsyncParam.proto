@@ -1,0 +1,93 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.jproject.zs.common.redis.dto";
+
+message RedisOptAsyncParam {
+
+  /**
+ * 数据来源，同源命令不同步
+ */
+  string zone = 1;
+  /**
+   * 为了后续可能的扩展预留字段
+   */
+  string action = 2;
+  /**
+   * redis 操作类型
+   */
+  RedisOptEnum opt = 3;
+
+  int64 expireSeconds = 4;
+  /**
+   * KV、SET等操作数据 限制只不过期缓存操作进行多机房同步
+   */
+  bytes rawKey = 5;
+  bytes rawHashKey = 6;
+  bytes rawData = 7;
+
+  /**
+   * incr命令参数
+   */
+  int64 delta = 8;
+
+  /**
+   * 批量操作数据 限制只不过期缓存操作进行多机房同步
+   */
+  string msgKey = 9;
+  /**
+   * 批量KV操作、hash操作
+   */
+  map<string, string> multiRawDataMap = 10;
+
+  /**
+   * zSet 命令参数
+   */
+  repeated Tuple zSetRawValues = 11;
+
+  repeated bytes rawDatas = 12;
+  /**
+   * LPush 命令参数
+   */
+  int32 limit = 13;
+  /**
+   * 批量设置过期时间 命令参数
+  */
+  repeated bytes keys = 14;
+}
+
+message Tuple {
+  bytes key = 1;
+  double score = 2;
+}
+
+enum RedisOptEnum {
+  SET = 0;
+  SETNX = 1;
+  DEL = 2;
+  INCR = 3;
+  SADD = 4;
+  SREM = 5;
+  MSET = 6;
+  HSET = 7;
+  HMSET = 8;
+  ZSETADD = 9;
+  HINCR = 10;
+  HREM = 11;
+  RPUSH = 12;
+  RPUSH_ALL = 13;
+  LPUSH = 14;
+  LPUSH_TRIM = 15;
+  EXPIRE = 16;
+  MEXPIRE = 17;
+  RPOP = 18;
+  LPOP = 19;
+
+
+  /**
+   * 一些redisson扩展指令
+   */
+  NUMBERSET = 101;
+
+}
+

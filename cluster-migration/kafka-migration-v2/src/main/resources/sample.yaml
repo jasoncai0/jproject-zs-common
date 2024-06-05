@@ -1,0 +1,50 @@
+kafka:
+  clusterConfigs:
+    - bootstrapConfig:
+        bootstrap.servers: 172.16.38.192:9090
+        retries: 10
+        batch.size: 16384
+        linger.ms: 1
+        buffer.memory: 33554432
+        key.serializer: org.apache.kafka.common.serialization.StringSerializer
+        value.serializer: org.apache.kafka.common.serialization.StringSerializer
+        group.id: sample-api
+        enable.auto.commit: true
+        session.timeout.ms: 300000
+        max.poll.records: 100
+      listenerBeanConsumeTopicsMap:
+        gradeSummaryMsgHandler: [ 'sample-grade-calculation-uat' ]
+        commentMsgHandler: [ 'sample-comment-uat','sample-play-time-uat' ]
+        replyMsgHandler: [ 'sample-reply-uat' ]
+      writeTopics: [ 'sample-comment-uat',  'sample-reply-uat',  'sample-grade-calculation-uat',  'sample-play-time-uat',  'sample-comment-change' ]
+      zone: gz
+    - bootstrapConfig:
+        bootstrap.servers: 172.16.38.192:9091
+        retries: 10
+        batch.size: 16384
+        linger.ms: 1
+        buffer.memory: 33554432
+        key.serializer: org.apache.kafka.common.serialization.StringSerializer
+        value.serializer: org.apache.kafka.common.serialization.StringSerializer
+        group.id: sample-api
+        enable.auto.commit: true
+        session.timeout.ms: 300000
+        max.poll.records: 100
+      listenerBeanConsumeTopicsMap:
+        gradeSummaryMsgHandler: [ 'sample-grade-calculation-uat' ]
+        commentMsgHandler: [ 'sample-comment-uat','sample-play-time-uat' ]
+        replyMsgHandler: [ 'sample-reply-uat' ]
+      writeTopics: [ 'sample-comment-uat',  'sample-reply-uat',  'sample-grade-calculation-uat',  'sample-play-time-uat',  'sample-comment-change' ]
+      zone: sh
+  producerStrategy:
+    topicGreyConfig:
+      sample-comment-uat:
+        - grey: 100
+          zone: gz
+        - grey: 0
+          zone: sh
+      topicProduceZoneDefault:
+        sample-reply-uat: gz,
+        sample-grade-calculation-uat: gz
+        sample-play-time-uat: gz
+        sample-comment-change: gz
